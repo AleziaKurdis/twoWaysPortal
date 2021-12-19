@@ -10,6 +10,7 @@
 //  See the accompanying file LICENSE or http://www.apache.org/licenses/LICENSE-2.0.html
 //
 (function() {
+    print("v3");
     var jsMainFileName = "portal.js";
     var ROOT = Script.resolvePath('').split(jsMainFileName)[0];
 
