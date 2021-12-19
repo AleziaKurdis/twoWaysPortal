@@ -25,7 +25,7 @@
     var httpRequest;
     
     var entityIDsToDelete = [];
-    var UPDATE_TIMER_INTERVAL = 300000; // each 5 minutes
+    var UPDATE_TIMER_INTERVAL = 120000; // each 2 minutes
     var processTimer = 0;
 
     this.preload = function(entityID) {
