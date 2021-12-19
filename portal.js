@@ -10,7 +10,6 @@
 //  See the accompanying file LICENSE or http://www.apache.org/licenses/LICENSE-2.0.html
 //
 (function() {
-    print("v3");
     var jsMainFileName = "portal.js";
     var ROOT = Script.resolvePath('').split(jsMainFileName)[0];
 
@@ -27,7 +26,7 @@
     var entityIDsToDelete = [];
     var UPDATE_TIMER_INTERVAL = 300000; // each 5 minutes
     var processTimer = 0;
-/*
+
     this.preload = function(entityID) {
         var properties = Entities.getEntityProperties(entityID, ["userData", "locked"]);
         var data = properties.userData;
@@ -106,7 +105,6 @@
         }  
     }
 
-*/
     function setPortalLocalentities() {
         if (state === "PENDING") {
             /*
