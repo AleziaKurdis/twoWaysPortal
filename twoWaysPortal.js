@@ -113,7 +113,7 @@
                 }
                 var userData = {
                     "pairingKey": pairingKey,
-                    "status": "PENDING",
+                    "state": "PENDING",
                     "destinationUrl": "",
                     "destinationName": "",
                     "colorHue": 0
