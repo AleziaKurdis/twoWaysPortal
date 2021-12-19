@@ -10,7 +10,7 @@
 //  See the accompanying file LICENSE or http://www.apache.org/licenses/LICENSE-2.0.html
 //
 (function(){ 
-/*
+
     var jsMainFileName = "portal.js";
     var ROOT = Script.resolvePath('').split(jsMainFileName)[0];
 
@@ -114,7 +114,7 @@
                 }, "local"); 
             entityIDsToDelete.push(id);
             */
-/*        } else if (state === "ACTIVE") {
+        } else if (state === "ACTIVE") {
             
         }        
     }
@@ -125,6 +125,6 @@
             //Window.location = "hifi://" + destName + destUrl;
         }
     }   
-*/
-print("WHAT!");
+
+
 })
