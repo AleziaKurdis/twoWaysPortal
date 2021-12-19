@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<!--
+    twoWaysPortal.html
+
+    Created by Alezia Kurdis, December 15th 2021.
+
+    Vircadia's application to install 2 ways teleporters.
+
+    Distributed under the Apache License, Version 2.0.
+    See the accompanying file LICENSE or http://www.apache.org/licenses/LICENSE-2.0.html
+-->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <script>
+            //Parameters
+            
+            function findGetParameter(parameterName) {
+                var result = null,
+                    tmp = [];
+                var items = location.search.substr(1).split("&");
+                for (var index = 0; index < items.length; index++) {
+                    tmp = items[index].split("=");
+                    if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+                }
+                return result;
+            }
+
+            var step = findGetParameter("step");
+            if(step === null){step = "1";}
+            step = parseInt(step, 10);
+
+            //Paths
+            var thisPageName = "twoWaysPortal.html";       
+            var currentPath = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            var ROOTPATH = currentPath.replace(thisPageName, ""); 
+            
+            var channel = "com.vircadia.twoWaysPortal";
+            
+            //LISTENER FROM JS FILE:
+            EventBridge.scriptEventReceived.connect(function(message){
+
+                //messageObj = parseJSON(message);
+
+                //react to the "message" string or to the "messageObj" JSON object. 
+
+            });
+
+
+        </script>
+        <style>
+            body {
+                background: #222836;
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 12px;
+                color: #ffffff;
+                font-weight: 600;
+                text-decoration: none;
+                font-style: normal;
+                font-variant: normal;
+                text-transform: none;
+            }
+            
+            .btn {
+              font-family: Arial;
+              color: #000000;
+              font-size: 11px;
+              font-weight: 700;
+              padding: 2px 9px 2px 9px;
+              text-decoration: none;
+            }
+
+            .btn:hover {
+              text-decoration: none;
+            }
+            
+            #pairingKey {
+                width: 75%;
+            }
+            
+            #errorRez {
+                width: 100%;
+                background: #ff0000;
+                font-size: 12px;
+                color: #ffffff;
+                font-weight: 600;
+            }
+            
+        </style>
+    </head>
+    <body>
+        <div id="step1">
+            <h1>STEP 1</h1>
+            <h2>Define a Pairing Key:</h2>
+            <input type = "text" id="pairingKey"> <button class = "btn" onClick="genPairingKey();">Random</button><br><br>
+            The "Pairing Key" is a unique value that will allowed this door to to automatically setup with the second one.<br><br>
+            You can set the value of your choice or use the button to generate one randomly.<br><br>
+            The same "Pairing Key" must be used for the 2 doors of the bidirectional portal.<br><br>
+            If you are not the owner of the 2nd location, you will have to send this "Pairing Key" to the other owner to allow him to setup correctly.
+            <br><br><br><br><hr>
+            
+            <h1>STEP 2</h1>
+            <h2>Generate the Portal</h2>
+            Once the "Pairing Key" is defined, you can now generate a first door. Click on this button to proceed:<br><br>
+            <button class = "btn" onClick="rezDoor();">REZ A DOOR</button><br><br>
+            <div id="errorRez"></div>
+            
+            
+        </div>
+        
+        <div id="step2"><h1>Edit Instruction</h1>
+        The "door" has been generated in front of your avatar.<br><br> 
+        You must now edit it to set it's final position in your world.<br><br> 
+        To do this, you must close this window and use the "Create" application.<br><br> 
+        Once done, when your door will be where you want it, open again the "2 WAYS TP" application to continue the setup and activate your door.<br><br> 
+        
+        </div>
+        
+        <div id="step3"><h1>STEP 3</h1>
+        <h2>Door activation:</h2>
+        By clicking on the "ACTIVATE" button your door will be configured and activated.<br><br>
+        The door might stay in a PENDING mode until the 2nd door get also activated.<br><br>
+        <button class = "btn" onClick="activateDoor();">ACTIVATE</button>
+        <br><br>
+        <i>NOTE: You have 24h to have the 2 door setup. Over that delay, the service will condider the pairing request as abandonned.<br><br>
+        </i>
+        </div>
+        
+        <div id="step4">Wait</div>
+        You need to visit this door inside that delay to have this setup completed.
+        <script>
+            function genPairingKey(){
+                document.getElementById("pairingKey").value = randomString(20);
+            }
+        
+            function randomString(len) {
+                var charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                var randomString = '';
+                for (var i = 0; i < len; i++) {
+                    var randomPoz = Math.floor(Math.random() * charSet.length);
+                    randomString += charSet.substring(randomPoz,randomPoz+1);
+                }
+                return randomString;
+            }
+            
+            function rezDoor() {
+                var str = document.getElementById("pairingKey").value;
+                var paringKey = str.replace(/[^a-zA-Z0-9_]/g, "");
+                if (paringKey === "") {
+                    document.getElementById("errorRez").innerHTML = "<br>&nbsp;&nbsp;&nbsp;The Pairing Key is mandatory. (see: Step 1)<br><br>";
+                    return;
+                } else {
+                    var dataObj = {
+                        "channel": channel,
+                        "action": "REZ_DOOR",
+                        "pairingKey": paringKey
+                    };
+                    EventBridge.emitWebEvent(JSON.stringify(dataObj));
+                    document.getElementById("step1").style.display = "none";
+                    document.getElementById("step2").style.display = "block";                    
+                    return;
+                }
+            }
+            
+            function activateDoor() {
+                var dataObj = {
+                    "channel": channel,
+                    "action": "ACTIVATE_DOOR"
+                };
+                EventBridge.emitWebEvent(JSON.stringify(dataObj));
+                document.getElementById("step3").style.display = "none";
+                document.getElementById("step4").style.display = "block";                    
+                return;           
+            }
+            
+            document.getElementById("step1").style.display = "none";
+            document.getElementById("step2").style.display = "none";
+            document.getElementById("step3").style.display = "none";
+            document.getElementById("step4").style.display = "none";
+            document.getElementById("step" + step).style.display = "block";
+        </script>
+    </body>
+</html>
