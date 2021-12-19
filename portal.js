@@ -29,7 +29,7 @@
     var processTimer = 0;
 
     this.preload = function(entityID) {
-        var properties = Entities.getEntityProperties(entityID, ["userData", "locked"]);
+        var properties = Entities.getEntityProperties(entityID, ["userData"]);
         var data = properties.userData;
         doorId = entityID;
 
@@ -85,6 +85,7 @@
                     destinationData.destinationName = responseObj.destinationName;
                     destinationData.state = "ACTIVE";
                     destinationData.colorHue = sumAscii(responseObj.destinationName)%360;
+                    var properties = Entities.getEntityProperties(entityID, ["locked"]);
                     if (properties.locked === true) {
                         Entities.editEntity(doorId, {"locked": false});
                     }                    
