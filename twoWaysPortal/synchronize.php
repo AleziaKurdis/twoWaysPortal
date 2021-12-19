@@ -47,11 +47,11 @@ if ((isset($_GET["pk"])) && (!empty($_GET["pk"]))){
                     if (time() - $entryTimestamp < 86400) {
                         $updatedData = $updatedData.$separator.$pairingEntry;
                         if ($entryPairingKey == $pairingKey) {
-                            if ($PortalID1 != $doorId) {
+                            if ($PortalID1 == $doorId) {
                                 $Response = '{"destinationUrl": "'.$destinationUrl2.'", "destinationName": "'.$destinationName2.'"}';
                                 echo($Response);
                             }
-                            if ($PortalID2 != $doorId) {
+                            if ($PortalID2 == $doorId) {
                                 $Response = '{"destinationUrl": "'.$destinationUrl1.'", "destinationName": "'.$destinationName1.'"}';
                                 echo($Response);
                             }
