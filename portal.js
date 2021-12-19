@@ -11,7 +11,7 @@
 //
 (function() {
     var jsMainFileName = "portal.js";
-    var ROOT = Script.resolvePath('').split(jsMainFileName)[0];
+    //var ROOT = Script.resolvePath('').split(jsMainFileName)[0];
 
     var state = "INACTIVE";
     var destUrl = "";
