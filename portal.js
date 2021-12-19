@@ -1,4 +1,4 @@
-"use strict";
+//"use strict";
 //
 //  portal.js
 //
@@ -11,14 +11,14 @@
 //
 (function() { 
     var jsMainFileName = "portal.js";
-    //var ROOT = Script.resolvePath('').split(jsMainFileName)[0];
+    var ROOT = Script.resolvePath('').split(jsMainFileName)[0];
 
     var state = "INACTIVE";
     var destUrl = "";
     var destName = "";
     var hue = 0;
     var destinationData;
-    //var doorId = Uuid.NULL;
+    var doorId = Uuid.NULL;
     
     var SYNC_SERVICE_URL = "http://metaverse.bashora.com/twoWaysPortal/synchronize.php";
     var httpRequest;
@@ -26,7 +26,7 @@
     var entityIDsToDelete = [];
     var UPDATE_TIMER_INTERVAL = 300000; // each 5 minutes
     var processTimer = 0;
-/*
+
     this.preload = function(entityID) {
         var properties = Entities.getEntityProperties(entityID, ["userData", "locked"]);
         var data = properties.userData;
@@ -104,7 +104,7 @@
             processTimer = today.getTime();
         }  
     }
-*/
+
     function setPortalLocalentities() {
         if (state === "PENDING") {
             /*
