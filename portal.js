@@ -11,14 +11,14 @@
 //
 (function() { 
     var jsMainFileName = "portal.js";
-    var ROOT = Script.resolvePath('').split(jsMainFileName)[0];
+    //var ROOT = Script.resolvePath('').split(jsMainFileName)[0];
 
     var state = "INACTIVE";
     var destUrl = "";
     var destName = "";
     var hue = 0;
     var destinationData;
-    var doorId = Uuid.NULL;
+    //var doorId = Uuid.NULL;
     
     var SYNC_SERVICE_URL = "http://metaverse.bashora.com/twoWaysPortal/synchronize.php";
     var httpRequest;
