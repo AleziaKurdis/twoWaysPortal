@@ -85,7 +85,7 @@
                     destinationData.destinationName = responseObj.destinationName;
                     destinationData.state = "ACTIVE";
                     destinationData.colorHue = sumAscii(responseObj.destinationName)%360;
-                    var properties = Entities.getEntityProperties(entityID, ["locked"]);
+                    var properties = Entities.getEntityProperties(doorId, ["locked"]);
                     if (properties.locked === true) {
                         Entities.editEntity(doorId, {"locked": false});
                     }                    
