@@ -8,4 +8,4 @@ https://aleziakurdis.github.io/twoWaysPortal/twoWaysPortal.js
 
 ## Php service  
 To have the solution working, you must install the 3 php files (in the twoWaysPortal directory) on a reachable web server.  
-You will also have to adjust the url to your php page in the file "twoWaysPortal.js".
+You will also have to adjust the url to your php page in the files: "twoWaysPortal.js" and "portal.js".
