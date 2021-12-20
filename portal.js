@@ -142,10 +142,10 @@
                     "visible": true
                 }, "local"); 
             entityIDsToDelete.push(id);
-            print("REZZED TEXT!");
             
         } else if (state === "ACTIVE") {
             var color = hslToRgb(hue, 1, 0.5);
+            print("COLOR: " + JSON.stringify(color));
             //TELEPORTER
             id = Entities.addEntity({
                     "name": "TP-Trigger",
