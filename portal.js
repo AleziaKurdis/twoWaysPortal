@@ -26,7 +26,7 @@
     var httpRequest;
     
     var entityIDsToDelete = [];
-    var UPDATE_TIMER_INTERVAL = 120000; // each 2 minutes
+    var UPDATE_TIMER_INTERVAL = 12000; // each 2 minutes
     var processTimer = 0;
 
     this.preload = function(entityID) {
@@ -113,17 +113,38 @@
         var properties = Entities.getEntityProperties(doorId, ["renderWithZones", "dimensions"]);
         
         if (state === "PENDING") {
-            /*
             //TEXT
-            var id = Entities.addEntity({
-               
+            id = Entities.addEntity({
+                    "type": "Text",
+                    "name": "PENDING",
+                    "dimensions": {
+                        "x": 1.6928883790969849,
+                        "y": 0.30000001192092896,
+                        "z": 0.009999999776482582
+                    },
+                    "renderWithZones": properties.renderWithZones,
+                    "parentID": doorId,
+                    "localPosition": {"x": 0 , "y": 1.2918, "z": -0.33},
+                    "localRotation": Quat.IDENTITY,                    
+                    "grab": {
+                        "grabbable": false
+                    },
+                    "text": "PENDING",
+                    "textColor": {
+                        "red": 255,
+                        "green": 225,
+                        "blue": 0
+                    },
+                    "topMargin": 0.09000000357627869,
+                    "unlit": true,
+                    "alignment": "center"
                 }, "local"); 
             entityIDsToDelete.push(id);
-            */
+            
         } else if (state === "ACTIVE") {
-
+            var color = hslToRgb(hue, 1, 0.5);
             //TELEPORTER
-            var id = Entities.addEntity({
+            id = Entities.addEntity({
                     "name": "TP-Trigger",
                     "type": "Shape",
                     "shape": "Cube",
@@ -141,6 +162,32 @@
             //MATERIAL
             
             //TEXT
+            id = Entities.addEntity({
+                    "type": "Text",
+                    "name": "PortalName",
+                    "dimensions": {
+                        "x": 1.6928883790969849,
+                        "y": 0.30000001192092896,
+                        "z": 0.009999999776482582
+                    },
+                    "renderWithZones": properties.renderWithZones,
+                    "parentID": doorId,
+                    "localPosition": {"x": 0 , "y": 1.2918, "z": -0.33},
+                    "localRotation": Quat.IDENTITY,                    
+                    "grab": {
+                        "grabbable": false
+                    },
+                    "text": destName,
+                    "textColor": {
+                        "red": color[0],
+                        "green": color[1],
+                        "blue": color[2]
+                    },
+                    "topMargin": 0.09000000357627869,
+                    "unlit": true,
+                    "alignment": "center"
+                }, "local"); 
+            entityIDsToDelete.push(id);
             
             //PARTICLE
             
