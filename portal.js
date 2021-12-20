@@ -144,7 +144,7 @@
             entityIDsToDelete.push(id);
             
         } else if (state === "ACTIVE") {
-            var color = hslToRgb(hue/360, 1, 0.5);
+            var color = hslToRgb(hue/360, 1, 0.65);
             //TELEPORTER
             id = Entities.addEntity({
                     "name": "TP-Trigger",
