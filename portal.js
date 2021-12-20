@@ -13,6 +13,7 @@
 
     var jsMainFileName = "portal.js";
     var ROOT = Script.resolvePath('').split(jsMainFileName)[0];
+    var TELEPORTER_SCRIPT_URL = ROOT + "teleporter.js";
 
     var state = "INACTIVE";
     var destUrl = "";
@@ -108,24 +109,42 @@
     }
 
     function setPortalLocalentities() {
+        var id;
+        var properties = Entities.getEntityProperties(doorId, ["renderWithZones", "dimensions"]);
+        
         if (state === "PENDING") {
             /*
+            //TEXT
             var id = Entities.addEntity({
                
                 }, "local"); 
             entityIDsToDelete.push(id);
             */
         } else if (state === "ACTIVE") {
+
+            //TELEPORTER
+            var id = Entities.addEntity({
+                    "name": "TP-Trigger",
+                    "type": "Shape",
+                    "Shape": "Cube",
+                    "renderWithZones": properties.renderWithZones,
+                    "dimensions": properties.dimensions,
+                    "parentID": doorId,
+                    "localPosition": Vec3.ZERO,
+                    "localRotation": Quat.IDENTITY,
+                    "script": TELEPORTER_SCRIPT_URL,
+                    "userData": "hifi://" + destName + destUrl,
+                    "visible": true
+                }, "local"); 
+            entityIDsToDelete.push(id);
+            
+            //MATERIAL
+            
+            //TEXT
+            
+            //PARTICLE
             
         }        
     }
-
-    this.enterEntity = function(entityID) {
-        if (state === "ACTIVE") {
-            print("TP URL = hifi://" + destName + destUrl);
-            //Window.location = "hifi://" + destName + destUrl;
-        }
-    }   
-
 
 })
