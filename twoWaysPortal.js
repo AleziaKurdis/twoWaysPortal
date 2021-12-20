@@ -23,7 +23,7 @@
     var actionTime = 0;
     var ANTI_MULIPLE_ACTION_DELAY = 2000; // 2 sec.
     
-    var TP_LANDING_OFFSET_VEC3 = { x: 0, y: 0, z: 1 };
+    var TP_LANDING_OFFSET_VEC3 = { x: 0, y: 0, z: 0.6 };
     var REZ_DOOR_OFFSET_VEC3 = { x: 0, y: 0.5, z: -3 };
     var TP_LANDING_INVERSE_ROTATION = {"x": 0, "y": 180, "z": 0};
     
