@@ -23,6 +23,10 @@
     var actionTime = 0;
     var ANTI_MULIPLE_ACTION_DELAY = 2000; // 2 sec.
     
+    var TP_LANDING_OFFSET_VEC3 = { x: 0, y: 0, z: -2 };
+    var REZ_DOOR_OFFSET_VEC3 = { x: 0, y: 0.5, z: -3 };
+    var TP_LANDING_INVERSE_ROTATION = {"x": 0, "y": 180, "z": 0};
+    
     var PAIRING_SERVICE_URL = "http://metaverse.bashora.com/twoWaysPortal/setPairingInfo.php";
     var httpRequest = null;
     
@@ -79,7 +83,7 @@
                 doorId = Entities.addEntity({
                         "type": "Model",
                         "name": "2_WAYS_PORTAL_DOOR",
-                        "position": Vec3.sum(MyAvatar.position, Vec3.multiplyQbyV(MyAvatar.orientation, { x: 0, y: 0.5, z: -3 })),
+                        "position": Vec3.sum(MyAvatar.position, Vec3.multiplyQbyV(MyAvatar.orientation, REZ_DOOR_OFFSET_VEC3)),
                         "rotation": MyAvatar.orientation,
                         "dimensions": {
                             "x": 2,
@@ -94,16 +98,14 @@
                         "useOriginalPivot": false                    
                     },"domain");
 
-                //We could reply using: 
-                //tablet.emitScriptEvent(JSON.stringify(anyJSONObject));
             }
             if(eventObj.channel === channel && eventObj.action === "ACTIVATE_DOOR" && (currently - actionTime) > ANTI_MULIPLE_ACTION_DELAY){
                 actionTime = currently;                
                 var properties = Entities.getEntityProperties(doorId, ["position", "rotation", "locked"]);
-                //ATTENTION if fault conuté le offset pour la position A FAIRE ###############################
-                
-                var positionGroup = "/" + properties.position.x.toFixed(4) + "," + properties.position.y.toFixed(4) + "," + properties.position.z.toFixed(4);
-                var rotationGroup = "/" + properties.rotation.x.toFixed(5) + "," + properties.rotation.y.toFixed(5) + "," + properties.rotation.z.toFixed(5) + "," + properties.rotation.w.toFixed(5);
+                var tpPosition = Vec3.sum(properties.position, Vec3.multiplyQbyV(properties.rotation, TP_LANDING_OFFSET_VEC3));
+                var tpRotation = Quat.multiply( properties.rotation, Quat.fromVec3Degrees(TP_LANDING_INVERSE_ROTATION));
+                var positionGroup = "/" + tpPosition.x.toFixed(4) + "," + tpPosition.y.toFixed(4) + "," + tpPosition.z.toFixed(4);
+                var rotationGroup = "/" + tpRotation.x.toFixed(5) + "," + tpRotation.y.toFixed(5) + "," + tpRotation.z.toFixed(5) + "," + tpRotation.w.toFixed(5);
                 var placename = location.hostname;
                 var landingAddress =  positionGroup + rotationGroup;
                 
@@ -147,10 +149,6 @@
     function onScreenChanged(type, url) {
         if (type == "Web" && url.indexOf(APP_URL) != -1) {
             appStatus = true;
-            //Here we know that the HTML UI is loaded.
-            //We could communitate to it here as we know it is loaded. Using:
-            //tablet.emitScriptEvent(JSON.stringify(anyJSONObject));
-
         } else {
             appStatus = false;
         }

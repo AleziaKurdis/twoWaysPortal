@@ -126,7 +126,7 @@
             var id = Entities.addEntity({
                     "name": "TP-Trigger",
                     "type": "Shape",
-                    "Shape": "Cube",
+                    "shape": "Cube",
                     "renderWithZones": properties.renderWithZones,
                     "dimensions": properties.dimensions,
                     "parentID": doorId,
@@ -134,7 +134,7 @@
                     "localRotation": Quat.IDENTITY,
                     "script": TELEPORTER_SCRIPT_URL,
                     "userData": "hifi://" + destName + destUrl,
-                    "visible": true
+                    "visible": false
                 }, "local"); 
             entityIDsToDelete.push(id);
             
