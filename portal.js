@@ -135,9 +135,11 @@
                         "green": 225,
                         "blue": 0
                     },
-                    "topMargin": 0.09000000357627869,
+                    "lineHeight": 0.1,
+                    "topMargin": 0.09,
                     "unlit": true,
-                    "alignment": "center"
+                    "alignment": "center",
+                    "visible": true
                 }, "local"); 
             entityIDsToDelete.push(id);
             
@@ -178,14 +180,16 @@
                         "grabbable": false
                     },
                     "text": destName,
+                    "lineHeight": 0.1,
                     "textColor": {
                         "red": color[0],
                         "green": color[1],
                         "blue": color[2]
                     },
-                    "topMargin": 0.09000000357627869,
+                    "topMargin": 0.09,
                     "unlit": true,
-                    "alignment": "center"
+                    "alignment": "center",
+                    "visible": true
                 }, "local"); 
             entityIDsToDelete.push(id);
             
