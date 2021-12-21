@@ -12,6 +12,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <script src="keySuggester.js"></script> 
         <script>
             //Parameters
             
@@ -92,7 +93,7 @@
         <div id="step1">
             <h1>STEP 1</h1>
             <h2>Define a Pairing Key:</h2>
-            <input type = "text" id="pairingKey"> <button class = "btn" onClick="genPairingKey();">Random</button><br><br>
+            <input type = "text" id="pairingKey"> <button class = "btn" onClick="genPairingKey();">Generate</button><br><br>
             The "Pairing Key" is a unique value that will allowed this door to to automatically setup with the second one.<br><br>
             You can set the value of your choice or use the button to generate one randomly.<br><br>
             The same "Pairing Key" must be used for the 2 doors of the bidirectional portal.<br><br>
@@ -141,7 +142,7 @@
         </div>
         <script>
             function genPairingKey(){
-                document.getElementById("pairingKey").value = randomString(20);
+                document.getElementById("pairingKey").value = suggestPairingKey(); //randomString(20);
             }
         
             function randomString(len) {
