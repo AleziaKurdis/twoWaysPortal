@@ -29,6 +29,7 @@
     var entityIDsToDelete = [];
     var UPDATE_TIMER_INTERVAL = 12000; // each 2 minutes
     var processTimer = 0;
+    var EXPIRATION_TIME = 86400000; //24h
 
     this.preload = function(entityID) {
         var properties = Entities.getEntityProperties(entityID, ["userData", "created"]);
