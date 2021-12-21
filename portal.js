@@ -208,14 +208,14 @@
             if (sumColorCompnent === 0) { 
                 sumColorCompnent = 0.001; 
             }
-            var bloomFactor = 9 / sumColorCompnent;
+            var bloomFactor = 5 / sumColorCompnent;
 
             var materialContent = {
                 "materialVersion": 1,
                 "materials": [
                         {
                             "name": "LIGHT",
-                            "albedo": [1, 1, 1],
+                            "albedo": [(color[0]/255), (color[1]/255), (color[2]/255)],
                             "metallic": 0.01,
                             "roughness": 0.01,
                             "opacity": 1,
