@@ -273,8 +273,6 @@
                 }, "local"); 
             entityIDsToDelete.push(id);
             
-            //PARTICLE
-            
             //LIGHT
             id = Entities.addEntity({
                 "renderWithZones": properties.renderWithZones,
@@ -301,8 +299,7 @@
                 "isSpotlight": false,
                 "visible": true
             },"local");
-            entityIDsToDelete.push(id);        
-            //SOUND
+            entityIDsToDelete.push(id);
             
         }        
     }
