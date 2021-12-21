@@ -275,6 +275,35 @@
             
             //PARTICLE
             
+            //LIGHT
+            id = Entities.addEntity({
+                "renderWithZones": properties.renderWithZones,
+                "parentID": doorId,
+                "locked": false,            
+                "localPosition": {"x": 0.0, "y": 0.0, "z": 0.0},
+                "name": "TP_Light",
+                "grab": {
+                    "grabbable": false
+                },
+                "type": "Light",
+                "dimensions": {
+                    "x": 3,
+                    "y": 3,
+                    "z": 3
+                },
+                "color": {
+                        "red": color[0],
+                        "green": color[1],
+                        "blue": color[2]
+                    },
+                "intensity": 3,
+                "falloffRadius": 0.5,
+                "isSpotlight": false,
+                "visible": true
+            },"local");
+            entityIDsToDelete.push(id);        
+            //SOUND
+            
         }        
     }
 
