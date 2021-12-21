@@ -21,6 +21,7 @@
     var hue = 0;
     var destinationData;
     var doorId = Uuid.NULL;
+    var creationDate = 0;
     
     var SYNC_SERVICE_URL = "http://metaverse.bashora.com/twoWaysPortal/synchronize.php";
     var httpRequest;
@@ -30,7 +31,8 @@
     var processTimer = 0;
 
     this.preload = function(entityID) {
-        var properties = Entities.getEntityProperties(entityID, ["userData"]);
+        var properties = Entities.getEntityProperties(entityID, ["userData", "created"]);
+        var creationDate = properties.created;
         var data = properties.userData;
         doorId = entityID;
 
@@ -77,6 +79,13 @@
     function myTimer(deltaTime) {
         var today = new Date();
         if ((today.getTime() - processTimer) > UPDATE_TIMER_INTERVAL) {
+            //validate creation date here
+            if ((today.getTime() - creationDate) > EXPIRATION_TIME) {
+                state = "EXPIRED";
+                Script.update.disconnect(myTimer);
+                killLocalEntities();
+                setPortalLocalentities();                
+            }
             
             if (state === "PENDING") {
                 var response = synchronize(SYNC_SERVICE_URL + "?pk=" + destinationData.pairingKey + "&pid=" + doorId);
@@ -143,6 +152,37 @@
                 }, "local"); 
             entityIDsToDelete.push(id);
             
+        } else if (state === "EXPIRED") {
+            //TEXT
+            id = Entities.addEntity({
+                    "type": "Text",
+                    "name": "EXPIRED",
+                    "dimensions": {
+                        "x": 1.6928883790969849,
+                        "y": 0.30000001192092896,
+                        "z": 0.009999999776482582
+                    },
+                    "renderWithZones": properties.renderWithZones,
+                    "parentID": doorId,
+                    "localPosition": {"x": 0 , "y": 1.2918, "z": -0.33},
+                    "localRotation": Quat.IDENTITY,                    
+                    "grab": {
+                        "grabbable": false
+                    },
+                    "text": "PAIRING EXPIRED",
+                    "textColor": {
+                        "red": 255,
+                        "green": 128,
+                        "blue": 0
+                    },
+                    "lineHeight": 0.1,
+                    "topMargin": 0.09,
+                    "unlit": true,
+                    "alignment": "center",
+                    "visible": true
+                }, "local"); 
+            entityIDsToDelete.push(id);
+            
         } else if (state === "ACTIVE") {
             var color = hslToRgb(hue/360, 1, 0.65);
             //TELEPORTER
@@ -162,6 +202,45 @@
             entityIDsToDelete.push(id);
             
             //MATERIAL
+
+            var sumColorCompnent = (color[0]/255) +(color[1]/255) +(color[2]/255);
+            if (sumColorCompnent === 0) { 
+                sumColorCompnent = 0.001; 
+            }
+            var bloomFactor = 9 / sumColorCompnent;
+
+            var materialContent = {
+                "materialVersion": 1,
+                "materials": [
+                        {
+                            "name": "LIGHT",
+                            "albedo": [1, 1, 1],
+                            "metallic": 0.01,
+                            "roughness": 0.01,
+                            "opacity": 1,
+                            "emissive": [(color[0]/255) * bloomFactor, (color[1]/255) * bloomFactor, (color[2]/255) * bloomFactor],
+                            "scattering": 0,
+                            "unlit": false,
+                            "cullFaceMode": "CULL_NONE",
+                            "model": "hifi_pbr"
+                        }
+                    ]
+                };
+            
+            id = Entities.addEntity({
+                "type": "Material",
+                "parentID": doorId,
+                "renderWithZones": properties.renderWithZones,
+                "locked": false,
+                "localPosition": {"x": 0.0, "y": 0.2, "z": 0.0},
+                "name": "TP-Material",
+                "materialURL": "materialData",
+                "priority": 1,
+                "parentMaterialName":  "mat::LIGHT",
+                "materialData": JSON.stringify(materialContent)
+            },"local");
+            entityIDsToDelete.push(id);
+
             
             //TEXT
             id = Entities.addEntity({
