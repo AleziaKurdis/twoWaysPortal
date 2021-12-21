@@ -33,7 +33,7 @@
 
     this.preload = function(entityID) {
         var properties = Entities.getEntityProperties(entityID, ["userData", "created"]);
-        var creationDate = properties.created;
+        creationDate = properties.created;
         var data = properties.userData;
         doorId = entityID;
 
