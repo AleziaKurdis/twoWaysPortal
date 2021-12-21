@@ -127,6 +127,9 @@
                 
                 //Set Script
                 Entities.editEntity(doorId, {"script": PORTAL_SCRIPT_URL, "locked": true});
+                
+                step = 1;
+                doorId = Uuid.NULL;
             }
         }
     }

@@ -126,8 +126,19 @@
         </i>
         </div>
         
-        <div id="step4">Wait</div>
-        You need to visit this door inside that delay to have this setup completed.
+        <div id="step4"><h1>STEP 4</h1>
+        <h2>The pairing is ongoing...</h2>
+        If the other door is already setup, then your door might be active immediatly.
+        <br><br>
+
+        If the other door is not yet setup, then your door will be PENDING until the other door get activated.
+        <br><br>
+        
+        Note: You need to visit this door inside 24 our to have the pairing completed.<br><br>
+        
+        YOU CAN NOW CLOSE THE APPLICATION.
+        
+        </div>
         <script>
             function genPairingKey(){
                 document.getElementById("pairingKey").value = randomString(20);
@@ -170,7 +181,7 @@
                 EventBridge.emitWebEvent(JSON.stringify(dataObj));
                 document.getElementById("step3").style.display = "none";
                 document.getElementById("step4").style.display = "block";                    
-                return;           
+                return;
             }
             
             document.getElementById("step1").style.display = "none";
