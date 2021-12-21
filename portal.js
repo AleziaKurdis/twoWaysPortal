@@ -79,8 +79,10 @@
 
     function myTimer(deltaTime) {
         var today = new Date();
+        print("NOW: " + today.getTime());
+        print("CRT: " + creationDate/1000);
+        print("DIF: " + (today.getTime() - (creationDate/1000)));
         if ((today.getTime() - processTimer) > UPDATE_TIMER_INTERVAL) {
-            //validate creation date here
             if ((today.getTime() - (creationDate/1000)) > EXPIRATION_TIME) {
                 state = "EXPIRED";
                 Script.update.disconnect(myTimer);
