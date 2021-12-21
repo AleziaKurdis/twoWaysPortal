@@ -296,7 +296,7 @@
                         "green": color[1],
                         "blue": color[2]
                     },
-                "intensity": 3,
+                "intensity": 5,
                 "falloffRadius": 0.5,
                 "isSpotlight": false,
                 "visible": true
