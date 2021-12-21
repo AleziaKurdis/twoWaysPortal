@@ -297,7 +297,7 @@
                         "blue": color[2]
                     },
                 "intensity": 5,
-                "falloffRadius": 0.5,
+                "falloffRadius": 0.7,
                 "isSpotlight": false,
                 "visible": true
             },"local");
