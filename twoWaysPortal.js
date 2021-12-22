@@ -82,7 +82,7 @@
                 //rez door
                 doorId = Entities.addEntity({
                         "type": "Model",
-                        "name": "2_WAYS_PORTAL_DOOR",
+                        "name": "2_WAYS_PORTAL_DOOR (" + pairingKey + ")",
                         "position": Vec3.sum(MyAvatar.position, Vec3.multiplyQbyV(MyAvatar.orientation, REZ_DOOR_OFFSET_VEC3)),
                         "rotation": MyAvatar.orientation,
                         "dimensions": {
@@ -100,7 +100,8 @@
 
             }
             if(eventObj.channel === channel && eventObj.action === "ACTIVATE_DOOR" && (currently - actionTime) > ANTI_MULIPLE_ACTION_DELAY){
-                actionTime = currently;                
+                actionTime = currently;
+                var isVisible = eventObj.visible;
                 var properties = Entities.getEntityProperties(doorId, ["position", "rotation", "locked"]);
                 var tpPosition = Vec3.sum(properties.position, Vec3.multiplyQbyV(properties.rotation, TP_LANDING_OFFSET_VEC3));
                 var tpRotation = Quat.multiply( properties.rotation, Quat.fromVec3Degrees(TP_LANDING_INVERSE_ROTATION));
@@ -120,7 +121,14 @@
                     "destinationName": "",
                     "colorHue": 0
                 };
-                Entities.editEntity(doorId, {"userData": JSON.stringify(userData)});
+                var shapeType = "static-mesh";
+                var collisionless = false;
+                if (!isVisible) {
+                    shapeType = "none";
+                    collisionless = true;
+                }
+                
+                Entities.editEntity(doorId, {"userData": JSON.stringify(userData), "visible": isVisible, "shapeType": shapeType, "collisionless": collisionless });
                 
                 //Send the data
                 sendToPairingService(PAIRING_SERVICE_URL + "?pk=" + pairingKey + "&pid=" + doorId + "&pln=" + encodeURI(placename) + "&add=" + encodeURI(landingAddress));

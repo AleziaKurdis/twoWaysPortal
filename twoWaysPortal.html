@@ -121,7 +121,7 @@
         <h2>Door activation:</h2>
         By clicking on the "ACTIVATE" button your door will be configured and activated.<br><br>
         The door might stay in a PENDING mode until the 2nd door get also activated.<br><br>
-        <button class = "btn" onClick="activateDoor();">ACTIVATE</button>
+        <button class = "btn" onClick="activateDoor(true);">ACTIVATE AS DOOR</button> <button class = "btn" onClick="activateDoor(false);">ACTIVATE AS INVISIBLE TRIGGER</button>
         <br><br>
         <i>NOTE: You have 24h to have the 2 door setup. Over that delay, the service will condider the pairing request as abandonned.<br><br>
         </i>
@@ -174,10 +174,11 @@
                 }
             }
             
-            function activateDoor() {
+            function activateDoor(isVisible) {
                 var dataObj = {
                     "channel": channel,
-                    "action": "ACTIVATE_DOOR"
+                    "action": "ACTIVATE_DOOR",
+                    "visible": isVisible
                 };
                 EventBridge.emitWebEvent(JSON.stringify(dataObj));
                 document.getElementById("step3").style.display = "none";

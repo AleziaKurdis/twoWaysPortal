@@ -14,6 +14,7 @@
     var jsMainFileName = "portal.js";
     var ROOT = Script.resolvePath('').split(jsMainFileName)[0];
     var TELEPORTER_SCRIPT_URL = ROOT + "teleporter.js";
+    var SILENT_TELEPORTER_SCRIPT_URL = ROOT + "silentTeleporter.js";
 
     var state = "INACTIVE";
     var destUrl = "";
@@ -22,6 +23,7 @@
     var destinationData;
     var doorId = Uuid.NULL;
     var creationDate = 0;
+    var visible;
     
     var SYNC_SERVICE_URL = "http://metaverse.bashora.com/twoWaysPortal/synchronize.php";
     var httpRequest;
@@ -32,7 +34,8 @@
     var EXPIRATION_TIME = 86400000; //24h
 
     this.preload = function(entityID) {
-        var properties = Entities.getEntityProperties(entityID, ["userData", "created"]);
+        var properties = Entities.getEntityProperties(entityID, ["userData", "created", "visible"]);
+        visible = properties.visible;
         creationDate = properties.created;
         var data = properties.userData;
         doorId = entityID;
@@ -122,6 +125,11 @@
         var id;
         var properties = Entities.getEntityProperties(doorId, ["renderWithZones", "dimensions"]);
         
+        var localPosition = {"x": 0 , "y": 1.2918, "z": -0.33};
+        if (!visible) {
+            localPosition = {"x": 0 , "y": 0, "z": 0};
+        }
+        
         if (state === "PENDING") {
             //TEXT
             id = Entities.addEntity({
@@ -134,7 +142,7 @@
                     },
                     "renderWithZones": properties.renderWithZones,
                     "parentID": doorId,
-                    "localPosition": {"x": 0 , "y": 1.2918, "z": -0.33},
+                    "localPosition": localPosition,
                     "localRotation": Quat.IDENTITY,                    
                     "grab": {
                         "grabbable": false
@@ -165,7 +173,7 @@
                     },
                     "renderWithZones": properties.renderWithZones,
                     "parentID": doorId,
-                    "localPosition": {"x": 0 , "y": 1.2918, "z": -0.33},
+                    "localPosition": localPosition,
                     "localRotation": Quat.IDENTITY,                    
                     "grab": {
                         "grabbable": false
@@ -186,6 +194,10 @@
             
         } else if (state === "ACTIVE") {
             var color = hslToRgb(hue/360, 1, 0.65);
+            var tpScript = TELEPORTER_SCRIPT_URL;
+            if (!visible) {
+                tpScript = SILENT_TELEPORTER_SCRIPT_URL;
+            }
             //TELEPORTER
             id = Entities.addEntity({
                     "name": "TP-Trigger",
@@ -196,111 +208,112 @@
                     "parentID": doorId,
                     "localPosition": Vec3.ZERO,
                     "localRotation": Quat.IDENTITY,
-                    "script": TELEPORTER_SCRIPT_URL,
+                    "script": tpScript,
                     "userData": "hifi://" + destName + destUrl,
                     "visible": false
                 }, "local"); 
             entityIDsToDelete.push(id);
             
-            //MATERIAL
+            if (visible) {
+                //MATERIAL
 
-            var sumColorCompnent = (color[0]/255) +(color[1]/255) +(color[2]/255);
-            if (sumColorCompnent === 0) { 
-                sumColorCompnent = 0.001; 
-            }
-            var bloomFactor = 5 / sumColorCompnent;
+                var sumColorCompnent = (color[0]/255) +(color[1]/255) +(color[2]/255);
+                if (sumColorCompnent === 0) { 
+                    sumColorCompnent = 0.001; 
+                }
+                var bloomFactor = 5 / sumColorCompnent;
 
-            var materialContent = {
-                "materialVersion": 1,
-                "materials": [
-                        {
-                            "name": "LIGHT",
-                            "albedo": [(color[0]/255), (color[1]/255), (color[2]/255)],
-                            "metallic": 0.01,
-                            "roughness": 0.01,
-                            "opacity": 1,
-                            "emissive": [(color[0]/255) * bloomFactor, (color[1]/255) * bloomFactor, (color[2]/255) * bloomFactor],
-                            "scattering": 0,
-                            "unlit": false,
-                            "cullFaceMode": "CULL_NONE",
-                            "model": "hifi_pbr"
-                        }
-                    ]
-                };
-            
-            id = Entities.addEntity({
-                "type": "Material",
-                "parentID": doorId,
-                "renderWithZones": properties.renderWithZones,
-                "locked": false,
-                "localPosition": {"x": 0.0, "y": 0.2, "z": 0.0},
-                "name": "TP-Material",
-                "materialURL": "materialData",
-                "priority": 1,
-                "parentMaterialName":  "mat::LIGHT",
-                "materialData": JSON.stringify(materialContent)
-            },"local");
-            entityIDsToDelete.push(id);
+                var materialContent = {
+                    "materialVersion": 1,
+                    "materials": [
+                            {
+                                "name": "LIGHT",
+                                "albedo": [(color[0]/255), (color[1]/255), (color[2]/255)],
+                                "metallic": 0.01,
+                                "roughness": 0.01,
+                                "opacity": 1,
+                                "emissive": [(color[0]/255) * bloomFactor, (color[1]/255) * bloomFactor, (color[2]/255) * bloomFactor],
+                                "scattering": 0,
+                                "unlit": false,
+                                "cullFaceMode": "CULL_NONE",
+                                "model": "hifi_pbr"
+                            }
+                        ]
+                    };
+                
+                id = Entities.addEntity({
+                    "type": "Material",
+                    "parentID": doorId,
+                    "renderWithZones": properties.renderWithZones,
+                    "locked": false,
+                    "localPosition": {"x": 0.0, "y": 0.2, "z": 0.0},
+                    "name": "TP-Material",
+                    "materialURL": "materialData",
+                    "priority": 1,
+                    "parentMaterialName":  "mat::LIGHT",
+                    "materialData": JSON.stringify(materialContent)
+                },"local");
+                entityIDsToDelete.push(id);
 
-            
-            //TEXT
-            id = Entities.addEntity({
-                    "type": "Text",
-                    "name": "PortalName",
-                    "dimensions": {
-                        "x": 1.6928883790969849,
-                        "y": 0.30000001192092896,
-                        "z": 0.009999999776482582
-                    },
+                
+                //TEXT
+                id = Entities.addEntity({
+                        "type": "Text",
+                        "name": "PortalName",
+                        "dimensions": {
+                            "x": 1.6928883790969849,
+                            "y": 0.30000001192092896,
+                            "z": 0.009999999776482582
+                        },
+                        "renderWithZones": properties.renderWithZones,
+                        "parentID": doorId,
+                        "localPosition": {"x": 0 , "y": 1.2918, "z": -0.33},
+                        "localRotation": Quat.IDENTITY,                    
+                        "grab": {
+                            "grabbable": false
+                        },
+                        "text": destName,
+                        "lineHeight": 0.1,
+                        "textColor": {
+                            "red": color[0],
+                            "green": color[1],
+                            "blue": color[2]
+                        },
+                        "topMargin": 0.09,
+                        "unlit": true,
+                        "alignment": "center",
+                        "visible": true
+                    }, "local"); 
+                entityIDsToDelete.push(id);
+                
+                //LIGHT
+                id = Entities.addEntity({
                     "renderWithZones": properties.renderWithZones,
                     "parentID": doorId,
-                    "localPosition": {"x": 0 , "y": 1.2918, "z": -0.33},
-                    "localRotation": Quat.IDENTITY,                    
+                    "locked": false,            
+                    "localPosition": {"x": 0.0, "y": 0.0, "z": 0.0},
+                    "name": "TP_Light",
                     "grab": {
                         "grabbable": false
                     },
-                    "text": destName,
-                    "lineHeight": 0.1,
-                    "textColor": {
-                        "red": color[0],
-                        "green": color[1],
-                        "blue": color[2]
+                    "type": "Light",
+                    "dimensions": {
+                        "x": 3,
+                        "y": 3,
+                        "z": 3
                     },
-                    "topMargin": 0.09,
-                    "unlit": true,
-                    "alignment": "center",
+                    "color": {
+                            "red": color[0],
+                            "green": color[1],
+                            "blue": color[2]
+                        },
+                    "intensity": 5,
+                    "falloffRadius": 0.7,
+                    "isSpotlight": false,
                     "visible": true
-                }, "local"); 
-            entityIDsToDelete.push(id);
-            
-            //LIGHT
-            id = Entities.addEntity({
-                "renderWithZones": properties.renderWithZones,
-                "parentID": doorId,
-                "locked": false,            
-                "localPosition": {"x": 0.0, "y": 0.0, "z": 0.0},
-                "name": "TP_Light",
-                "grab": {
-                    "grabbable": false
-                },
-                "type": "Light",
-                "dimensions": {
-                    "x": 3,
-                    "y": 3,
-                    "z": 3
-                },
-                "color": {
-                        "red": color[0],
-                        "green": color[1],
-                        "blue": color[2]
-                    },
-                "intensity": 5,
-                "falloffRadius": 0.7,
-                "isSpotlight": false,
-                "visible": true
-            },"local");
-            entityIDsToDelete.push(id);
-            
+                },"local");
+                entityIDsToDelete.push(id);
+            }
         }        
     }
 
