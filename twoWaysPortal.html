@@ -75,6 +75,10 @@
               text-decoration: none;
             }
             
+            #btnActivateTable {
+                width: 100%;
+            }
+            
             #pairingKey {
                 width: 75%;
             }
@@ -87,17 +91,25 @@
                 font-weight: 600;
             }
             
-            #portalImageContainer {
-                width: 100%;
-                text-align: center;
-            }
-            
             #portalImage {
                 width: 200px;
                 float: right;
                 margin: 5px;
             }
-            
+
+            .btnActive {
+              font-family: Arial;
+              color: #000000;
+              font-size: 11px;
+              font-weight: 700;
+              padding: 2px 9px 2px 9px;
+              text-decoration: none;
+              width: 100%;
+            }
+
+            .btnActive:hover {
+              text-decoration: none;
+            }            
             
         </style>
     </head>
@@ -106,17 +118,17 @@
             <h2>BIDIRECTIONAL PORTAL GENERATOR</h2>
             <img id='portalImage' src='portals.png'>This application eases the creation of bidirectional portals: Two interconnected doors allowing people to teleport in the two directions.<br><br>
             
-            To make the setup very simple, and achievable independantly by two different domain's owners, the only thing you have to agree on, is to use a same "PAIRING KEY".
+            To make the setup very simple, and achievable independently by two different domain's owners, the only thing you have to agree on, is to use a same "PAIRING KEY".
             This key is used to synchronize automatically two doors together and achieve their persistent configuration.<br><br>
 
-            You will have the choice of using a <b>physical door model</b>, or an <b>invisible teleportation trigger</b> <i>(that you can put over your own design)</i><br><br>
+            You will have the choice of using a <b>physical door model</b>, or an <b>invisible teleportation trigger</b> <i>(that you can add over your own model.)</i><br><br>
             <b>Let's create a door...</b>
             <hr>
             <h2>STEP 1 - Define a Pairing Key:</h2>
             <input type = "text" id="pairingKey"> <button class = "btn" onClick="genPairingKey();">Random</button><br><br>
             The "Pairing Key" is a unique value that will allowed this door to to automatically setup with a second one.
-            You can set the value of your choice or use the button to generate one randomly, or use the one that an other owner gives you.<br><br>
-            If you are not the owner of the 2nd location, you will have to send this "Pairing Key" to the other owner to allow him to setup correctly.
+            You can set the value of your choice or use the "Random" button to generate one, or use the one that another owner gives you.<br><br>
+            If you are not the owner of the 2nd location, you will have to send this "Pairing Key" to the other owner to allow him configuring his door.
             <br><br><hr>
             
             <h2>STEP 2 - Generate the Portal</h2>
@@ -129,25 +141,28 @@
         
         <div id="step2"><h2>Edit and position your door...</h2>
         The "door" has been generated in front of your avatar.<br> 
-        You must now edit it to set it's final position in your world.<br><br> 
+        You must now edit it to set its final position in your world.<br><br> 
         To do this: you must <b>CLOSE</b> this window and use the "<b>Create</b>" application.<br><br><br><hr>
      
         <h2>ONCE DONE:</h2> 
         When your door will be where you want it, <b>OPEN AGAIN</b> the "<b>2 WAYS TP</b>" application 
         to continue the setup with the <b>STEP 3</b> to <b>ACTIVATE</b> your door.<br><br><br> 
         <i><b>Note:</b> If you don't want to use this door model but use an <b>invisible teleportation trigger</b>, don't worry, this will be decided during the STEP 3.
-        It's anyway a lot more easy to used the model to position your tigger correctly as it is clear where the front side is. (Where the visitor will enter the world.)</i> 
+        It's anyway a lot more easy to use the model to position your trigger correctly as it is clear where the front side is. (Where the visitor will enter the world.)</i> 
         
         
         </div>
         
-        <div id="step3"><h1>STEP 3</h1>
-        <h2>Door activation:</h2>
-        By clicking on the "ACTIVATE" button your door will be configured and activated.<br><br>
-        The door might stay in a PENDING mode until the 2nd door get also activated.<br><br>
-        <button class = "btn" onClick="activateDoor(true);">ACTIVATE AS DOOR</button> <button class = "btn" onClick="activateDoor(false);">ACTIVATE AS INVISIBLE TRIGGER</button>
+        <div id="step3"><h2>STEP 3 - Door activation</h2>
+        By clicking on the "ACTIVATE" button your door will be configured and activated definitively.<br><br>
+        The door might stay in the PENDING mode until the 2nd door get also activated.<br><br>
+        <table id="btnActivateTable"><tr>
+        <td width='45%'><button class = "btnActive" onClick="activateDoor(true);">ACTIVATE AS DOOR</button></td>
+        <td width='10%'>&nbsp;</td>
+        <td width='45%'><button class = "btnActive" onClick="activateDoor(false);">ACTIVATE AS INVISIBLE TRIGGER</button></td>
+        </tr></table>
         <br><br>
-        <i>NOTE: You have 24h to have the 2 door setup. Over that delay, the service will condider the pairing request as abandonned.<br><br>
+        <i>NOTE: You have 24h to have the two doors setup. Over that delay, the service will condider the pairing request as abandonned.<br><br>
         </i>
         </div>
         
