@@ -45,7 +45,7 @@
     });
 
 
-    function clicked(){
+    function clicked() {
         if (appStatus === true) {
             tablet.webEventReceived.disconnect(onMoreAppWebEventReceived);
             tablet.gotoHomeScreen();
@@ -138,6 +138,10 @@
                 
                 step = 1;
                 doorId = Uuid.NULL;
+            }
+            if(eventObj.channel === channel && eventObj.action === "QUIT" && (currently - actionTime) > ANTI_MULIPLE_ACTION_DELAY){
+                actionTime = currently;
+                clicked();
             }
         }
     }

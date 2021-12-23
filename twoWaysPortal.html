@@ -239,7 +239,11 @@
             }
             
             function appQuit() {
-                Window.close();
+                var dataObj = {
+                    "channel": channel,
+                    "action": "QUIT"
+                };
+                EventBridge.emitWebEvent(JSON.stringify(dataObj));
             }
             
             document.getElementById("step1").style.display = "none";
