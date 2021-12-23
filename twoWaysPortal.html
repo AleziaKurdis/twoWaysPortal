@@ -177,9 +177,9 @@
         
         YOU CAN NOW CLOSE THE APPLICATION.
         <table class="btnActivateTable"><tr>
-        <td width='45%'><button class = "btnActive" onClick="quit();">QUIT</button></td>
+        <td width='45%'><button class = "btnActive" onClick="appQuit();">QUIT</button></td>
         <td width='10%'>&nbsp;</td>
-        <td width='45%'><button class = "btnActive" onClick="new();">SETUP A NEW DOOR</button></td>
+        <td width='45%'><button class = "btnActive" onClick="appNew();">SETUP A NEW DOOR</button></td>
         </tr></table>        
         
         </div>
@@ -229,7 +229,7 @@
                 return;
             }
             
-            function new() {
+            function appNew() {
                 step = 1;
                 document.getElementById("step1").style.display = "none";
                 document.getElementById("step2").style.display = "none";
@@ -238,7 +238,7 @@
                 document.getElementById("step" + step).style.display = "block";                
             }
             
-            function quit() {
+            function appQuit() {
                 Window.close();
             }
             
