@@ -75,7 +75,7 @@
               text-decoration: none;
             }
             
-            #btnActivateTable {
+            .btnActivateTable {
                 width: 100%;
             }
             
@@ -156,7 +156,7 @@
         <div id="step3"><h2>STEP 3 - Door activation</h2>
         By clicking on one of the "ACTIVATE" buttons, your door will be configured and activated definitively.<br><br>
         The door might stay in the PENDING mode until the 2nd door get also activated.<br><br>
-        <table id="btnActivateTable"><tr>
+        <table class="btnActivateTable"><tr>
         <td width='47%'><button class = "btnActive" onClick="activateDoor(true);">ACTIVATE AS<br>A DOOR (CURRENT MODEL)</button></td>
         <td width='6%'>&nbsp;</td>
         <td width='47%'><button class = "btnActive" onClick="activateDoor(false);">ACTIVATE AS<br>AN INVISIBLE TRIGGER</button></td>
@@ -166,17 +166,21 @@
         </i>
         </div>
         
-        <div id="step4"><h1>STEP 4</h1>
-        <h2>The pairing is ongoing...</h2>
+        <div id="step4"><h1>The pairing is ongoing...</h1>
         If the other door is already setup, then your door might be active immediatly.
         <br><br>
 
-        If the other door is not yet setup, then your door will be PENDING until the other door get activated.
+        If the other door is not yet setup, then your door will be "PENDING" until the other door get activated.
         <br><br>
         
         Note: You need to visit this door inside 24 our to have the pairing completed.<br><br>
         
         YOU CAN NOW CLOSE THE APPLICATION.
+        <table class="btnActivateTable"><tr>
+        <td width='45%'><button class = "btnActive" onClick="quit();">QUIT</button></td>
+        <td width='10%'>&nbsp;</td>
+        <td width='45%'><button class = "btnActive" onClick="new();">SETUP A NEW DOOR</button></td>
+        </tr></table>        
         
         </div>
         <script>
@@ -223,6 +227,19 @@
                 document.getElementById("step3").style.display = "none";
                 document.getElementById("step4").style.display = "block";                    
                 return;
+            }
+            
+            function new() {
+                step = 1;
+                document.getElementById("step1").style.display = "none";
+                document.getElementById("step2").style.display = "none";
+                document.getElementById("step3").style.display = "none";
+                document.getElementById("step4").style.display = "none";
+                document.getElementById("step" + step).style.display = "block";                
+            }
+            
+            function quit() {
+                Window.close();
             }
             
             document.getElementById("step1").style.display = "none";
