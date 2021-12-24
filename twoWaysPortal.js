@@ -57,6 +57,9 @@
                 step = 1;
                 doorId = Uuid.NULL;
             }
+            if (location.protocol.substr(0, 4) === "http" || location.hostname === "localhost") {
+                step = 1000;
+            }
             tablet.gotoWebScreen(APP_URL + "?step=" + step);
             tablet.webEventReceived.connect(onMoreAppWebEventReceived);
             appStatus = true;
